@@ -9,12 +9,17 @@ const App = () => {
 
   // Fetch backend data on component mount
   useEffect(() => {
-    fetch("https://your-backend-url.com/api/dashboard") // Replace with your backend API URL
-      .then((response) => response.json())
+    fetch("https://ziver-minig-app.onrender.com/api/dashboard") // Updated backend URL
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => {
-        setUsername(data.username);
-        setBalance(data.balance);
-        setDaysCheckedIn(data.daysCheckedIn);
+        setUsername(data.username || "Guest");
+        setBalance(data.balance || 0);
+        setDaysCheckedIn(data.daysCheckedIn || 0);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
