@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./styles.css";
 
 const App = () => {
-  // States for user data
+  // States for user data and message
   const [username, setUsername] = useState("Guest");
   const [balance, setBalance] = useState(0);
   const [daysCheckedIn, setDaysCheckedIn] = useState(0);
+  const [message, setMessage] = useState(""); // New state for message
 
   // Fetch backend data
   useEffect(() => {
@@ -22,11 +23,22 @@ const App = () => {
         setBalance(data.balance || 0);
         setDaysCheckedIn(data.daysCheckedIn || 0);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching dashboard data:", error);
+      }
+    };
+
+    const fetchMessage = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/");
+        const data = await response.json();
+        setMessage(data.message);
+      } catch (error) {
+        console.error("Error fetching message:", error);
       }
     };
 
     fetchDashboardData();
+    fetchMessage(); // Fetch message data
   }, []);
 
   return (
@@ -42,6 +54,10 @@ const App = () => {
           <h3>{daysCheckedIn}-day streak</h3>
           <p>Track your progress!</p>
           <button onClick={() => alert("Mining Started!")}>Start Mining</button>
+        </section>
+
+        <section id="message">
+          <h3>{message || 'Loading message...'}</h3> {/* Display the fetched message */}
         </section>
       </main>
 
@@ -59,7 +75,3 @@ const App = () => {
 };
 
 export default App;
-}
-
-export default App;
-
