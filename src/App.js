@@ -75,3 +75,7 @@ const App = () => {
 };
 
 export default App;
+import ErrorBoundary from './ErrorBoundary';
+<ErrorBoundary>
+  <App />
+</ErrorBoundary>
